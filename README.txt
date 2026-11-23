@@ -1,3 +1,6 @@
+Experimental, Work In Progress. Use at your own risk!
+
+
 TinyTx - RP2040 Zero to CRSF / ExpressLRS bridge
 =======================================================
 
