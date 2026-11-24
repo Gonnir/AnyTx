@@ -73,6 +73,7 @@ bool UIEngine::begin(ConfigManager* cfg, CRSFEngine* crsf, InputManager* input,
         delay(60);
     }
 
+    disp.setAddr(found_addr);
     disp.setTextSize(1);
     disp.setTextColor(SSD1306_WHITE);
     disp.clearDisplay();
@@ -2617,6 +2618,7 @@ void UIEngine::hModeConfirm(const JoyEvent& e) {
             disp.clearDisplay();
             disp.setTextSize(2); disp.setCursor(14, 24); disp.print(F("Reboot"));
             disp.setTextSize(1); disp.display();
+            disp.finish();
             delay(700);
             rp2040.reboot();
         }
@@ -3135,6 +3137,7 @@ void UIEngine::hSafety(const JoyEvent& e) {
                 disp.clearDisplay();
                 disp.setTextSize(2); disp.setCursor(14, 24); disp.print(F("Restart"));
                 disp.setTextSize(1); disp.display();
+                disp.finish();
                 delay(500);
                 rp2040.reboot();
                 break;
@@ -3612,6 +3615,7 @@ void UIEngine::hLinkSetup(const JoyEvent& e) {
             disp.clearDisplay();
             disp.setTextSize(2); disp.setCursor(14, 24); disp.print(F("Reboot"));
             disp.setTextSize(1); disp.display();
+            disp.finish();
             delay(600);
             rp2040.reboot();
         }
@@ -3679,6 +3683,7 @@ void UIEngine::hLinkWireSelect(const JoyEvent& e) {
         disp.clearDisplay();
         disp.setTextSize(2); disp.setCursor(14, 24); disp.print(F("Reboot"));
         disp.setTextSize(1); disp.display();
+        disp.finish();
         delay(600);
         rp2040.reboot();
     }
@@ -3696,6 +3701,8 @@ void UIEngine::hInputInfo(const JoyEvent& e) {
 void UIEngine::update(const uint16_t ch_out[CRSF_NUM_CHANNELS], const InputState& in) {
     _live = ch_out;
     _in   = in;
+
+    if (_oled_ok) { disp.setAsync(true); disp.pump(); }   // one slice of the previous frame per pass
 
     JoyEvent e = _joy.read();
 
@@ -3834,6 +3841,7 @@ void UIEngine::update(const uint16_t ch_out[CRSF_NUM_CHANNELS], const InputState
 
     uint32_t now = millis();
     if (now - _last_draw < 25) return;   // ~40 fps cap
+    if (disp.busy()) return;             // previous frame still going out slice by slice
     _last_draw = now;
 
     if (millis() < _toast_until) { drawToast(); return; }

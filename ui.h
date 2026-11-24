@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
+#include "oled_async.h"
 #include "config.h"
 #include "config_manager.h"
 #include "crsf.h"
@@ -154,7 +155,7 @@ private:
 // ─── UI ENGINE ───────────────────────────────────────────────────────────────
 class UIEngine {
 public:
-    Adafruit_SSD1306 disp{OLED_WIDTH, OLED_HEIGHT, &Wire, -1};
+    TinyOled disp{OLED_WIDTH, OLED_HEIGHT, &Wire, -1};
 
     // Returns false if the OLED never ACKed on either address after all
     // retries - the caller can flag that visibly (e.g. on the status LED),
@@ -186,7 +187,7 @@ public:
         if (n && *n) { strncpy(_model_name, n, sizeof(_model_name) - 1); _model_name[sizeof(_model_name) - 1] = 0; }
         else           _model_name[0] = 0;
     }
-    // ── TinyTxCompanion (serial settings link, see companion.h) ─────────────
+    // ── AnyTxCompanion (serial settings link, see companion.h) ─────────────
     bool activeProfile(uint16_t& vid, uint16_t& pid) const {
         vid = _active_vid; pid = _active_pid; return _active_valid;
     }

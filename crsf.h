@@ -150,7 +150,7 @@ public:
     void writeParamValue(const LiveParam& p, int32_t value);
     void writeParamString(const LiveParam& p, const char* str);
 
-    // ── TinyTxCompanion hooks (see companion.h) ─────────────────────────────
+    // ── AnyTxCompanion hooks (see companion.h) ─────────────────────────────
     // The CRSF UART doubles as the settings link when a USB-serial adapter is
     // plugged in where the ELRS module normally goes. The tap sees every
     // received byte so the HELLO handshake can be spotted; a session then

@@ -16,7 +16,7 @@
 //
 //  OpenI6X reserves nine slots for user-recorded phrases:
 //      0271_custm1.wav .. 0279_custm9.wav
-//  TinyTx uses four of those (see the SND_* constants in config.h) for
+//  AnyTx uses four of those (see the SND_* constants in config.h) for
 //  events OpenI6X's own stock pack has no phrase for (bind, saved, mode
 //  changed, calibration); everything else - startup, link up/lost, the
 //  throttle-not-idle warning, and link-quality tiers - plays the matching
@@ -84,7 +84,7 @@ public:
     // interrupting anything. This is a one-way link, so a module that browned
     // out and restarted - e.g. when a controller is plugged in and its start-up
     // current pulls the 5V rail down - would otherwise come back at its own
-    // default (maximum) volume and TinyTx would never know. Called on every
+    // default (maximum) volume and AnyTx would never know. Called on every
     // controller connection.
     void refresh() { _refresh_at = millis() + REFRESH_DELAY_MS; _refresh_due = true; }
 
